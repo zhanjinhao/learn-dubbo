@@ -1,0 +1,6 @@
+hello=st.HelloPrintServiceImpl
+world=st.WorldPrintServiceImpl
+jdk=st.JdkPrintServiceImpl
+dubbo=st.DubboPrintServiceImpl
+wrapper1=st.Wrapper1PrintServiceImpl
+wrapper2=st.Wrapper2PrintServiceImpl
