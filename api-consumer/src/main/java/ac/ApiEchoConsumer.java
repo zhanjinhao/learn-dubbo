@@ -23,6 +23,8 @@ public class ApiEchoConsumer {
         registryConfig.setAddress("81.71.14.12");
         registryConfig.setPort(2181);
         registryConfig.setTimeout(30000);
+        registryConfig.setUseAsConfigCenter(false);
+        registryConfig.setUseAsMetadataCenter(false);
 
         ReferenceConfig<EchoService> referenceConfig = new ReferenceConfig<>();
         referenceConfig.setInterface(EchoService.class);

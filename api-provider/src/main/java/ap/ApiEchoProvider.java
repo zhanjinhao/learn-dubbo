@@ -31,7 +31,7 @@ public class ApiEchoProvider {
         // 服务提供者协议配置
         ProtocolConfig protocol = new ProtocolConfig();
         protocol.setName("dubbo");
-        protocol.setPort(12345);
+        protocol.setPort(12347);
         protocol.setThreads(4);
 
 
@@ -54,5 +54,42 @@ public class ApiEchoProvider {
                 .start()                                // 启动Dubbo
                 .await();                               // 挂起等待(防止进程退出）
     }
+//
+//    public void setPropertyValue(Object o, String n, Object v) {
+//        es.EchoServiceImpl w;
+//        try {
+//            w = ((es.EchoServiceImpl) $1);
+//        } catch (Throwable e) {
+//            throw new IllegalArgumentException(e);
+//        }
+//        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException("Not found property \"" + $2 + "\" field or setter method in class es.EchoServiceImpl.");
+//    }
+//
+//    public Object getPropertyValue(Object o, String n) {
+//        es.EchoServiceImpl w;
+//        try {
+//            w = ((es.EchoServiceImpl) $1);
+//        } catch (Throwable e) {
+//            throw new IllegalArgumentException(e);
+//        }
+//        throw new org.apache.dubbo.common.bytecode.NoSuchPropertyException("Not found property \"" + $2 + "\" field or getter method in class es.EchoServiceImpl.");
+//    }
+//
+//    public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException {
+//        es.EchoServiceImpl w;
+//        try {
+//            w = ((es.EchoServiceImpl) $1);
+//        } catch (Throwable e) {
+//            throw new IllegalArgumentException(e);
+//        }
+//        try {
+//            if ("echo".equals($2) && $3.length == 1) {
+//                return ($w) w.echo((java.lang.String) $4[0]);
+//            }
+//        } catch (Throwable e) {
+//            throw new java.lang.reflect.InvocationTargetException(e);
+//        }
+//        throw new org.apache.dubbo.common.bytecode.NoSuchMethodException("Not found method \"" + $2 + "\" in class es.EchoServiceImpl.");
+//    }
 
 }

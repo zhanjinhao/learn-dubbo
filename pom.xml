@@ -18,6 +18,7 @@
         <module>xml-spring-consumer</module>
         <module>annotation-spring-consumer</module>
         <module>api-consumer</module>
+        <module>consistent-hash-test</module>
     </modules>
     <packaging>pom</packaging>
 
