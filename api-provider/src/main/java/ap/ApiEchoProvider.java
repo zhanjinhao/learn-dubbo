@@ -18,21 +18,21 @@ public class ApiEchoProvider {
 
         RegistryConfig registryConfig = new RegistryConfig();
         registryConfig.setAddress("zookeeper://81.71.14.12:2181");
-        registryConfig.setTimeout(30000);
+        registryConfig.setTimeout(3000000);
         registryConfig.setUseAsConfigCenter(false);
         registryConfig.setUseAsMetadataCenter(false);
 
 
         ProviderConfig providerConfig = new ProviderConfig();
         providerConfig.setRetries(3);
-        providerConfig.setTimeout(3000);
+        providerConfig.setTimeout(3000000);
 
 
         // 服务提供者协议配置
         ProtocolConfig protocol = new ProtocolConfig();
         protocol.setName("dubbo");
-        protocol.setPort(12347);
-        protocol.setThreads(4);
+        protocol.setPort(12346);
+        protocol.setThreads(2);
 
 
         // 注意：ServiceConfig为重对象，内部封装了与注册中心的连接，以及开启服务端口
@@ -42,6 +42,7 @@ public class ApiEchoProvider {
         echoServiceConfig.setRef(new EchoServiceImpl());
         echoServiceConfig.setVersion("1.0.0");
         echoServiceConfig.setProtocol(protocol);
+//        echoServiceConfig.setAsync(true);
 
 
         // 通过DubboBootstrap简化配置组装，控制启动过程

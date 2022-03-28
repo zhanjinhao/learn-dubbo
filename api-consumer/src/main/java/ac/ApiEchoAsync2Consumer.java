@@ -1,21 +1,23 @@
 package ac;
 
 import es.EchoService;
-import org.apache.dubbo.common.extension.ExtensionLoader;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+import org.apache.dubbo.rpc.RpcContext;
 
-import java.util.logging.Filter;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
 
 /**
  * @Author ISJINHAO
  * @Date 2022/3/11 16:55
  */
-public class ApiEchoConsumer {
+public class ApiEchoAsync2Consumer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         ApplicationConfig applicationConfig = new ApplicationConfig();
         applicationConfig.setName("api-consumer");
@@ -34,19 +36,21 @@ public class ApiEchoConsumer {
         referenceConfig.setVersion("1.0.0");
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
-        bootstrap.application(applicationConfig) // 应用配置
-                .registry(registryConfig) // 注册中心配置
-                .reference(referenceConfig) // 添加ReferenceConfig
-                .start();    // 启动Dubbo
+        bootstrap.application(applicationConfig)        // 应用配置
+                .registry(registryConfig)               // 注册中心配置
+                .reference(referenceConfig)             // 添加ReferenceConfig
+                .start();                               // 启动Dubbo
 
         EchoService echoService = bootstrap.getCache().get(EchoService.class);
 
-        while (true) {
-            new Thread(() -> {
-                System.out.println(echoService.echo("hello world!"));
-            }).start();
+        for (int i = 0; i < 1000000; i++) {
+            System.out.println(echoService.echoAsync2("hello world!"));
+
+            Future<Object> future = RpcContext.getContext().getFuture();
+            System.out.println(future.get());
+
             try {
-                Thread.sleep(100);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

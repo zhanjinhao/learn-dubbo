@@ -1,19 +1,19 @@
 package ac;
 
 import es.EchoService;
-import org.apache.dubbo.common.extension.ExtensionLoader;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
-import java.util.logging.Filter;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 /**
  * @Author ISJINHAO
  * @Date 2022/3/11 16:55
  */
-public class ApiEchoConsumer {
+public class ApiEchoAsyncConsumer {
 
     public static void main(String[] args) {
 
@@ -34,17 +34,26 @@ public class ApiEchoConsumer {
         referenceConfig.setVersion("1.0.0");
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
-        bootstrap.application(applicationConfig) // 应用配置
-                .registry(registryConfig) // 注册中心配置
-                .reference(referenceConfig) // 添加ReferenceConfig
-                .start();    // 启动Dubbo
+        bootstrap.application(applicationConfig)        // 应用配置
+                .registry(registryConfig)               // 注册中心配置
+                .reference(referenceConfig)             // 添加ReferenceConfig
+                .start();                               // 启动Dubbo
 
         EchoService echoService = bootstrap.getCache().get(EchoService.class);
 
-        while (true) {
+        for (int i = 0; i < 1000000; i++) {
             new Thread(() -> {
-                System.out.println(echoService.echo("hello world!"));
+                long start = System.currentTimeMillis();
+                CompletableFuture<String> future = echoService.echoAsync("hello world!");
+                future.whenComplete(new BiConsumer<String, Throwable>() {
+                    @Override
+                    public void accept(String s, Throwable throwable) {
+                        System.out.println("cost : " + (System.currentTimeMillis() - start));
+                        System.out.println(s);
+                    }
+                });
             }).start();
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
