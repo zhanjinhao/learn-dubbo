@@ -1,31 +1,31 @@
 package asc;
 
-import es.EchoService;
 import org.apache.dubbo.config.*;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author ISJINHAO
  * @Date 2022/3/10 22:51
  */
-@Component
 public class AnnotationEchoConsumer {
-
-    @DubboReference
-    private EchoService echoService;
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AnnotationEchoConsumer.class, ConsumerConfiguration.class);
+        context.register(ConsumerConfiguration.class, EchoServiceHolder.class);
         context.refresh();
+        EchoServiceHolder echoServiceHolder = context.getBean(EchoServiceHolder.class);
 
-        AnnotationEchoConsumer annotationEchoConsumer = context.getBean(AnnotationEchoConsumer.class);
-        System.out.println(annotationEchoConsumer.echoService.echo("hello world"));
+        for(int i = 0; i < 10; i++) {
+            echoServiceHolder.echo("hello world");
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         context.close();
 
@@ -59,14 +59,14 @@ public class AnnotationEchoConsumer {
             return registryConfig;
         }
 
-        @Bean
-        public ReferenceConfigBase<EchoService> annotationEchoServiceReferenceConfig(ConsumerConfig consumerConfig) {
-            ReferenceConfigBase<EchoService> referenceConfig = new ReferenceConfig<>();
-            referenceConfig.setInterface(EchoService.class);
-            referenceConfig.setProtocol("dubbo");
-            referenceConfig.setConsumer(consumerConfig);
-            return referenceConfig;
-        }
+//        @Bean
+//        public ReferenceConfigBase<EchoService> annotationEchoServiceReferenceConfig(ConsumerConfig consumerConfig) {
+//            ReferenceConfigBase<EchoService> referenceConfig = new ReferenceConfig<>();
+//            referenceConfig.setInterface(EchoService.class);
+//            referenceConfig.setProtocol("dubbo");
+//            referenceConfig.setConsumer(consumerConfig);
+//            return referenceConfig;
+//        }
 
     }
 

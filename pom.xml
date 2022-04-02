@@ -21,6 +21,7 @@
         <module>consistent-hash-test</module>
         <module>my-async-rpc</module>
         <module>xml-spring-rest-and-dubbo-provider</module>
+        <module>timing-wheel-test</module>
     </modules>
     <packaging>pom</packaging>
 
